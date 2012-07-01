@@ -10,8 +10,7 @@ group :development, :test do
   gem 'guard-rspec', '0.5.5'
 end
 
-#also bneed tthe lib notify
-#gem 'annotate', '~> 2.4.1.beta', group: :development
+gem 'annotate', '~> 2.4.1.beta', group: :development
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -29,6 +28,9 @@ group :test do
   gem 'capybara', '1.1.2'
   gem 'guard-spork', '0.3.2'
   gem 'spork', '0.9.0'
+  gem 'rb-inotify', '0.8.8'
+  gem 'libnotify', '0.5.9'
+  gem 'factory_girl_rails', '1.4.0'
 end
 
 group :production do
