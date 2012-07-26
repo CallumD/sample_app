@@ -25,9 +25,7 @@ describe "Authentication" do
       describe "when attempting to visit a protected page" do
         before do
           visit edit_user_path(user)
-          fill_in "Email",    with: user.email
-          fill_in "Password", with: user.password
-          click_button "Sign in"
+          sign_in user
         end
 
         describe "after signing in" do
@@ -93,6 +91,8 @@ describe "Authentication" do
 
       it { should have_selector('title', text: 'Sign in') }
       it { should have_error_message('Invalid') }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
 
      describe "after visiting another page" do
         before { click_link "Home" }
@@ -115,6 +115,15 @@ describe "Authentication" do
       describe "followed by signout" do
         before { click_link "Sign out" }
         it { should have_link('Sign in') }
+      end
+
+     describe "accessing the new user page" do
+        before { visit new_user_path }
+        it { should have_selector('h1',    text: 'Welcome to the Sample App') }
+      end
+
+     describe "accessing the create user page" do
+        it { expect { post users_path(user) }.not_to change(User, :count) }
       end
     end
   end
