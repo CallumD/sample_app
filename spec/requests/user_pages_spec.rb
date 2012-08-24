@@ -4,6 +4,30 @@ describe "User pages" do
 
  subject { page }
 
+    describe "show page" do
+      let(:user) { FactoryGirl.create(:user) }
+      
+      describe "microposts feed" do 
+	before do 
+	  FactoryGirl.create(:micropost, user: user) 
+	  sign_in user
+          visit root_path
+	end
+        it { should have_selector('h3', text: 'Micropost Feed')}
+        it { should have_content('1 micropost')}
+      end
+
+      describe "multiple microposts" do 
+	before do 
+	  3.times {FactoryGirl.create(:micropost, user: user)}
+	  sign_in user
+          visit root_path
+	end
+        it { should have_content('3 microposts')}
+      end
+    end
+
+
     describe "index" do
 
     let(:user) { FactoryGirl.create(:user) }
@@ -103,6 +127,10 @@ describe "User pages" do
     it { should have_selector('h1',    text: user.name) }
     it { should have_selector('title', text: user.name) }
 
+    describe "microposts count" do 
+      it { should have_selector('h3', text: 'Microposts (2)')}
+    end
+
     describe "microposts" do
       it { should have_content(m1.content) }
       it { should have_content(m2.content) }
@@ -146,7 +174,6 @@ describe "User pages" do
       end
     end
 
-
     describe "with valid information" do
       before do
         fill_in "Name",         with: "Example User"
@@ -154,7 +181,8 @@ describe "User pages" do
         fill_in "Password",     with: "foobar"
         fill_in "Confirm Password", with: "foobar"
       end
-describe "after saving the user" do
+
+    describe "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by_email('user@example.com') }
 
