@@ -27,11 +27,16 @@ describe "User pages" do
       end
       
       describe "pagination" do
-      30.times {FactoryGirl.create(:micropost, user: user)}
+      before do 
+	31.times {FactoryGirl.create(:micropost, user: user)} 
+	sign_in user
+        visit root_path
+      end
+
       it { should have_selector('div.pagination') }
 
       it "should list each micropost" do
-        User.microposts.paginate(page: 1).each do |micropost|
+        user.microposts.paginate(page: 1).each do |micropost|
           page.should have_selector('li', text: micropost.content)
         end
       end
