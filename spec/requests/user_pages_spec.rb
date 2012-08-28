@@ -2,7 +2,47 @@ require 'spec_helper'
 
 describe "User pages" do
 
- subject { page }
+subject { page }
+
+  describe "show page" do
+    let(:user) { FactoryGirl.create(:user) }
+      
+    describe "microposts feed" do 
+      before do 
+        FactoryGirl.create(:micropost, user: user) 
+        sign_in user
+        visit root_path
+      end
+      it { should have_selector('h3', text: 'Micropost Feed')}
+      it { should have_content('1 micropost')}
+    end
+
+    describe "multiple microposts" do 
+      before do 
+        3.times {FactoryGirl.create(:micropost, user: user)}
+        sign_in user
+        visit root_path
+      end
+      it { should have_content('3 microposts')}
+    end
+    
+    describe "pagination" do
+      before do 
+        31.times {FactoryGirl.create(:micropost, user: user)} 
+        sign_in user
+        visit root_path
+      end
+
+      it { should have_selector('div.pagination') }
+
+      it "should list each micropost" do
+        user.microposts.paginate(page: 1).each do |micropost|
+          page.should have_selector('li', text: micropost.content)
+        end
+      end
+    end
+  end
+
 
     describe "index" do
 
@@ -152,7 +192,6 @@ describe "User pages" do
       end
     end
 
-
     describe "with valid information" do
       before do
         fill_in "Name",         with: "Example User"
@@ -160,7 +199,8 @@ describe "User pages" do
         fill_in "Password",     with: "foobar"
         fill_in "Confirm Password", with: "foobar"
       end
-describe "after saving the user" do
+
+    describe "after saving the user" do
         before { click_button submit }
         let(:user) { User.find_by_email('user@example.com') }
 
