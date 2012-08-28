@@ -2,34 +2,34 @@ require 'spec_helper'
 
 describe "User pages" do
 
- subject { page }
+subject { page }
 
-    describe "show page" do
-      let(:user) { FactoryGirl.create(:user) }
+  describe "show page" do
+    let(:user) { FactoryGirl.create(:user) }
       
-      describe "microposts feed" do 
-	before do 
-	  FactoryGirl.create(:micropost, user: user) 
-	  sign_in user
-          visit root_path
-	end
-        it { should have_selector('h3', text: 'Micropost Feed')}
-        it { should have_content('1 micropost')}
-      end
-
-      describe "multiple microposts" do 
-	before do 
-	  3.times {FactoryGirl.create(:micropost, user: user)}
-	  sign_in user
-          visit root_path
-	end
-        it { should have_content('3 microposts')}
-      end
-      
-      describe "pagination" do
+    describe "microposts feed" do 
       before do 
-	31.times {FactoryGirl.create(:micropost, user: user)} 
-	sign_in user
+        FactoryGirl.create(:micropost, user: user) 
+        sign_in user
+        visit root_path
+      end
+      it { should have_selector('h3', text: 'Micropost Feed')}
+      it { should have_content('1 micropost')}
+    end
+
+    describe "multiple microposts" do 
+      before do 
+        3.times {FactoryGirl.create(:micropost, user: user)}
+        sign_in user
+        visit root_path
+      end
+      it { should have_content('3 microposts')}
+    end
+    
+    describe "pagination" do
+      before do 
+        31.times {FactoryGirl.create(:micropost, user: user)} 
+        sign_in user
         visit root_path
       end
 
@@ -41,9 +41,7 @@ describe "User pages" do
         end
       end
     end
-      
-      
-    end
+  end
 
 
     describe "index" do
