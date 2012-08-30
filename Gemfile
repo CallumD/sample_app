@@ -25,7 +25,7 @@ group :assets do
 end
 
 gem 'therubyracer', :platform => :ruby
-gem 'ci_reporter'
+gem 'ci_reporter', '1.7.1'
 gem 'jquery-rails', '2.1.1'
 
 group :test do
