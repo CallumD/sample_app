@@ -13,10 +13,13 @@ $('.word_count').each(function(){
         $(this).keyup(function(){
                 // get new length of characters
                 var new_length = 140 - $(this).val().length;
-                // get new length of words
-                //var new_length = $(this).val().split(/\b[\s,\.-:;]*/).length;
-                // update
                 $(this).parent().find('.counter').html( new_length + ' characters');
+
+                if (new_length < 0){
+		  $(this).parent().find('.post').attr("disabled", true);
+                } else {
+		  $(this).parent().find('.post').attr("disabled", false);
+                }
         });
     });
 });
